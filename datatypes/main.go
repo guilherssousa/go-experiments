@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -65,7 +66,7 @@ func main() {
 	// 	Error() string
 	// }
 
-	var erro error
+	var erro error = errors.New("Very cool")
 	fmt.Println(erro)
 
 	// zero values
