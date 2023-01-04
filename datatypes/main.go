@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	// learning about the golang datatypes
@@ -58,10 +60,13 @@ func main() {
 	fmt.Println(boolean)
 
 	// error
-	// error is a interface
+	// error is a type
 	// type error interface {
 	// 	Error() string
 	// }
+
+	var erro error
+	fmt.Println(erro)
 
 	// zero values
 
