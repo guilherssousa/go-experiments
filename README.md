@@ -10,6 +10,7 @@ Some of the contents were introduced by Otávio Augusto Gallego, FIAP alumni.
 2. [Modules](modules/main.go)
 3. [External Modules](external_modules/main.go)
 4. [Variables](variables/main.go)
+5. [Data types](datatypes/main.go)
 
 ### See also
 
