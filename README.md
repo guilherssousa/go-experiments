@@ -13,6 +13,7 @@ Some of the contents were introduced by Otávio Augusto Gallego, FIAP alumni.
 5. [Data types](datatypes/main.go)
 6. [Functions](functions/main.go)
 7. [Hex Dump](hex_dump/main.go)
+8. [Open Gen 1 Save File](open_save_file/main.go)
 
 ### See also
 
