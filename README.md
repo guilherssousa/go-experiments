@@ -15,6 +15,7 @@ Some of the contents were introduced by Otávio Augusto Gallego, FIAP alumni.
 7. [Hex Dump](hex_dump/main.go)
 8. [Open Gen 1 Save File](open_save_file/main.go)
 9. [JavaScript URLSearchParams API](urlsearchparams/main.go)
+10. [PR App (cd traverser)](pr/main.go)
 
 ### See also
 
