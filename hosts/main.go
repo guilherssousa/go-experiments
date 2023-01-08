@@ -113,6 +113,8 @@ func parse_hosts_file(hosts_file []byte) []HostsEntry {
 			Line: index,
 		}
 
+		line = strings.TrimSpace(line)
+
 		if line == "" {
 			continue
 		}
@@ -121,21 +123,19 @@ func parse_hosts_file(hosts_file []byte) []HostsEntry {
 			entry.Enabled = true
 		} else {
 			line = line[1:]
-		}
-
-		line = strings.TrimSpace(line)
-
-		ip, host, comment := parse_line(line)
-
-		if comment {
+			line = strings.TrimSpace(line)
 			if line == "" {
 				continue
 			}
+		}
+
+		ip, host, comment := parse_line(line)
+
+		entry.Ip = ip
+		entry.Host = host
+		entry.Enabled = !comment
+		if comment {
 			entry.Comment = line
-			entry.Enabled = false
-		} else {
-			entry.Ip = ip
-			entry.Host = host
 		}
 
 		hosts = append(hosts, entry)
