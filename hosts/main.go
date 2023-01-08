@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"net"
 	"os"
 	"runtime"
@@ -9,11 +9,25 @@ import (
 )
 
 type HostsFile struct {
-	entries []HostsEntry
+	Entries []HostsEntry
+}
+
+type HostsEntry struct {
+	Host    string
+	Ip      net.IP
+	Enabled bool
+	Line    int
+	Comment string
 }
 
 func (h HostsFile) Length() int {
-	return len(h.entries)
+	return len(h.Entries)
+}
+
+func (h HostsFile) ToJSON() []byte {
+	object, _ := json.Marshal(h.Entries)
+
+	return object
 }
 
 func (h HostsFile) GetByIp(ip any) HostsEntry {
@@ -30,8 +44,8 @@ func (h HostsFile) GetByIp(ip any) HostsEntry {
 		panic("GetByIp: Invalid IP")
 	}
 
-	for _, entry := range h.entries {
-		if entry.ip.Equal(valid_ip) {
+	for _, entry := range h.Entries {
+		if entry.Ip.Equal(valid_ip) {
 			return entry
 		}
 	}
@@ -40,7 +54,7 @@ func (h HostsFile) GetByIp(ip any) HostsEntry {
 }
 
 func (h HostsFile) Remove(index int) {
-	h.entries = append(h.entries[:index], h.entries[index+1:]...)
+	h.Entries = append(h.Entries[:index], h.Entries[index+1:]...)
 }
 
 func (h HostsFile) Set(ip any, host string, enabled bool) {
@@ -59,20 +73,12 @@ func (h HostsFile) Set(ip any, host string, enabled bool) {
 		panic("Set: Invalid IP")
 	}
 
-	h.entries = append(h.entries, HostsEntry{
-		ip:      valid_ip,
-		host:    host,
-		enabled: enabled,
-		line:    h.Length() + 1,
+	h.Entries = append(h.Entries, HostsEntry{
+		Ip:      valid_ip,
+		Host:    host,
+		Enabled: enabled,
+		Line:    h.Length() + 1,
 	})
-}
-
-type HostsEntry struct {
-	host    string
-	ip      net.IP
-	enabled bool
-	line    int
-	comment string
 }
 
 var HOSTS_FILE_PATH = map[string]string{
@@ -104,7 +110,7 @@ func parse_hosts_file(hosts_file []byte) []HostsEntry {
 
 	for index, line := range lines {
 		entry := HostsEntry{
-			line: index,
+			Line: index,
 		}
 
 		if line == "" {
@@ -112,7 +118,7 @@ func parse_hosts_file(hosts_file []byte) []HostsEntry {
 		}
 
 		if line[0] != '#' {
-			entry.enabled = true
+			entry.Enabled = true
 		} else {
 			line = line[1:]
 		}
@@ -122,11 +128,11 @@ func parse_hosts_file(hosts_file []byte) []HostsEntry {
 		ip, host, comment := parse_line(line)
 
 		if comment {
-			entry.comment = line
-			entry.enabled = false
+			entry.Comment = line
+			entry.Enabled = false
 		} else {
-			entry.ip = ip
-			entry.host = host
+			entry.Ip = ip
+			entry.Host = host
 		}
 
 		hosts = append(hosts, entry)
@@ -171,16 +177,14 @@ func load_hosts_file() HostsFile {
 	}
 
 	return HostsFile{
-		entries: parse_hosts_file(buffer),
+		Entries: parse_hosts_file(buffer),
 	}
 }
 
 func main() {
 	hosts := load_hosts_file()
 
-	valid_hostname := net.ParseIP("192.168.0.14")
+	hosts_json := hosts.ToJSON()
 
-	docker_image_host := hosts.GetByIp(valid_hostname)
-
-	fmt.Println(docker_image_host)
+	os.WriteFile("hosts.json", hosts_json, 0666)
 }
