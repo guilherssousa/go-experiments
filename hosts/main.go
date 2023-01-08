@@ -15,8 +15,20 @@ func (h HostsFile) Length() int {
 	return len(h.entries)
 }
 
-func (h HostsFile) Get(index int) HostsEntry {
-	return h.entries[index]
+func (h HostsFile) GetByIp(ip string) HostsEntry {
+	valid_ip := net.ParseIP(ip)
+
+	if valid_ip == nil {
+		panic("GetByIp: Invalid IP")
+	}
+
+	for _, entry := range h.entries {
+		if entry.ip.Equal(valid_ip) {
+			return entry
+		}
+	}
+
+	return HostsEntry{}
 }
 
 func (h HostsFile) Remove(index int) {
@@ -24,12 +36,14 @@ func (h HostsFile) Remove(index int) {
 }
 
 func (h HostsFile) Set(ip string, host string, enabled bool) {
-	if net.ParseIP(ip) == nil {
-		panic("Invalid IP")
+	valid_ip := net.ParseIP(ip)
+
+	if valid_ip == nil {
+		panic("Set: Invalid IP")
 	}
 
 	h.entries = append(h.entries, HostsEntry{
-		ip:      ip,
+		ip:      valid_ip,
 		host:    host,
 		enabled: enabled,
 		line:    h.Length() + 1,
@@ -38,7 +52,7 @@ func (h HostsFile) Set(ip string, host string, enabled bool) {
 
 type HostsEntry struct {
 	host    string
-	ip      string
+	ip      net.IP
 	enabled bool
 	line    int
 	comment string
@@ -50,19 +64,19 @@ var HOSTS_FILE_PATH = map[string]string{
 	"darwin":  "/etc/hosts",
 }
 
-func parse_line(line string) ([2]string, bool) {
+func parse_line(line string) (net.IP, string, bool) {
 	host_ip_pair := strings.Split(line, " ")
 
 	if len(host_ip_pair) == 2 {
-		ip := host_ip_pair[0]
+		ip := net.ParseIP(host_ip_pair[0])
 		host := host_ip_pair[1]
 
-		if net.ParseIP(ip) != nil {
-			return [2]string{ip, host}, false
+		if ip != nil {
+			return ip, host, false
 		}
 	}
 
-	return [2]string{"", ""}, true
+	return nil, "", true
 }
 
 func parse_hosts_file(hosts_file []byte) []HostsEntry {
@@ -88,14 +102,14 @@ func parse_hosts_file(hosts_file []byte) []HostsEntry {
 
 		line = strings.TrimSpace(line)
 
-		host_ip_pair, comment := parse_line(line)
+		ip, host, comment := parse_line(line)
 
 		if comment {
 			entry.comment = line
 			entry.enabled = false
 		} else {
-			entry.ip = host_ip_pair[0]
-			entry.host = host_ip_pair[1]
+			entry.ip = ip
+			entry.host = host
 		}
 
 		hosts = append(hosts, entry)
@@ -149,8 +163,5 @@ func main() {
 
 	hosts.Set("192.168.0.1", "localhost", true)
 
-	for i := 0; i < hosts.Length(); i++ {
-		entry := hosts.Get(i)
-		println(i, entry.ip, entry.host, entry.enabled)
-	}
+	hosts.GetByIp("192.168.0.14")
 }
