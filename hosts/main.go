@@ -13,11 +13,11 @@ type HostsFile struct {
 }
 
 type HostsEntry struct {
-	Host    string
-	Ip      net.IP
-	Enabled bool
-	Line    int
-	Comment string
+	Host    string `json:"host,omitempty"`
+	Ip      net.IP `json:"ip,omitempty"`
+	Enabled bool   `json:"enabled"`
+	Line    int    `json:"line"`
+	Comment string `json:"comment,omitempty"`
 }
 
 func (h HostsFile) Length() int {
@@ -128,6 +128,9 @@ func parse_hosts_file(hosts_file []byte) []HostsEntry {
 		ip, host, comment := parse_line(line)
 
 		if comment {
+			if line == "" {
+				continue
+			}
 			entry.Comment = line
 			entry.Enabled = false
 		} else {

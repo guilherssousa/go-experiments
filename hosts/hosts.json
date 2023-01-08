@@ -1,149 +1,86 @@
 [
   {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 0,
-    "Comment": "Copyright (c) 1993-2009 Microsoft Corp."
-  },
-  { "Host": "", "Ip": "", "Enabled": false, "Line": 1, "Comment": "" },
-  {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 2,
-    "Comment": "This is a sample HOSTS file used by Microsoft TCP/IP for Windows."
-  },
-  { "Host": "", "Ip": "", "Enabled": false, "Line": 3, "Comment": "" },
-  {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 4,
-    "Comment": "This file contains the mappings of IP addresses to host names. Each"
+    "enabled": false,
+    "line": 0,
+    "comment": "Copyright (c) 1993-2009 Microsoft Corp."
   },
   {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 5,
-    "Comment": "entry should be kept on an individual line. The IP address should"
+    "enabled": false,
+    "line": 2,
+    "comment": "This is a sample HOSTS file used by Microsoft TCP/IP for Windows."
   },
   {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 6,
-    "Comment": "be placed in the first column followed by the corresponding host name."
+    "enabled": false,
+    "line": 4,
+    "comment": "This file contains the mappings of IP addresses to host names. Each"
   },
   {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 7,
-    "Comment": "The IP address and the host name should be separated by at least one"
-  },
-  { "Host": "", "Ip": "", "Enabled": false, "Line": 8, "Comment": "space." },
-  { "Host": "", "Ip": "", "Enabled": false, "Line": 9, "Comment": "" },
-  {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 10,
-    "Comment": "Additionally, comments (such as these) may be inserted on individual"
+    "enabled": false,
+    "line": 5,
+    "comment": "entry should be kept on an individual line. The IP address should"
   },
   {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 11,
-    "Comment": "lines or following the machine name denoted by a '#' symbol."
-  },
-  { "Host": "", "Ip": "", "Enabled": false, "Line": 12, "Comment": "" },
-  {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 13,
-    "Comment": "For example:"
-  },
-  { "Host": "", "Ip": "", "Enabled": false, "Line": 14, "Comment": "" },
-  {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 15,
-    "Comment": "102.54.94.97     rhino.acme.com          # source server"
+    "enabled": false,
+    "line": 6,
+    "comment": "be placed in the first column followed by the corresponding host name."
   },
   {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 16,
-    "Comment": "38.25.63.10     x.acme.com              # x client host"
+    "enabled": false,
+    "line": 7,
+    "comment": "The IP address and the host name should be separated by at least one"
   },
-  { "Host": "", "Ip": "", "Enabled": false, "Line": 17, "Comment": "" },
+  { "enabled": false, "line": 8, "comment": "space." },
   {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 18,
-    "Comment": "localhost name resolution is handled within DNS itself."
+    "enabled": false,
+    "line": 10,
+    "comment": "Additionally, comments (such as these) may be inserted on individual"
   },
   {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 19,
-    "Comment": "127.0.0.1       localhost"
+    "enabled": false,
+    "line": 11,
+    "comment": "lines or following the machine name denoted by a '#' symbol."
+  },
+  { "enabled": false, "line": 13, "comment": "For example:" },
+  {
+    "enabled": false,
+    "line": 15,
+    "comment": "102.54.94.97     rhino.acme.com          # source server"
   },
   {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 20,
-    "Comment": "::1             localhost"
+    "enabled": false,
+    "line": 16,
+    "comment": "38.25.63.10     x.acme.com              # x client host"
   },
   {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 21,
-    "Comment": "Added by Docker Desktop"
+    "enabled": false,
+    "line": 18,
+    "comment": "localhost name resolution is handled within DNS itself."
+  },
+  { "enabled": false, "line": 19, "comment": "127.0.0.1       localhost" },
+  { "enabled": false, "line": 20, "comment": "::1             localhost" },
+  { "enabled": false, "line": 21, "comment": "Added by Docker Desktop" },
+  {
+    "host": "host.docker.internal",
+    "ip": "192.168.0.14",
+    "enabled": true,
+    "line": 22
   },
   {
-    "Host": "host.docker.internal",
-    "Ip": "192.168.0.14",
-    "Enabled": true,
-    "Line": 22,
-    "Comment": ""
+    "host": "gateway.docker.internal",
+    "ip": "192.168.0.14",
+    "enabled": true,
+    "line": 23
   },
   {
-    "Host": "gateway.docker.internal",
-    "Ip": "192.168.0.14",
-    "Enabled": true,
-    "Line": 23,
-    "Comment": ""
+    "enabled": false,
+    "line": 24,
+    "comment": "To allow the same kube context to work on the host and the container:"
   },
   {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 24,
-    "Comment": "To allow the same kube context to work on the host and the container:"
+    "host": "kubernetes.docker.internal",
+    "ip": "127.0.0.1",
+    "enabled": true,
+    "line": 25
   },
-  {
-    "Host": "kubernetes.docker.internal",
-    "Ip": "127.0.0.1",
-    "Enabled": true,
-    "Line": 25,
-    "Comment": ""
-  },
-  {
-    "Host": "",
-    "Ip": "",
-    "Enabled": false,
-    "Line": 26,
-    "Comment": "End of section"
-  }
+  { "enabled": false, "line": 26, "comment": "End of section" }
 ]
