@@ -35,8 +35,17 @@ func (h HostsFile) Remove(index int) {
 	h.entries = append(h.entries[:index], h.entries[index+1:]...)
 }
 
-func (h HostsFile) Set(ip string, host string, enabled bool) {
-	valid_ip := net.ParseIP(ip)
+func (h HostsFile) Set(ip any, host string, enabled bool) {
+	var valid_ip net.IP
+
+	switch ip.(type) {
+	case net.IP:
+		valid_ip = ip.(net.IP)
+	case string:
+		valid_ip = net.ParseIP(ip.(string))
+	default:
+		panic("Set: the ip argument must be of type net.IP or string")
+	}
 
 	if valid_ip == nil {
 		panic("Set: Invalid IP")
@@ -161,7 +170,7 @@ func load_hosts_file() HostsFile {
 func main() {
 	hosts := load_hosts_file()
 
-	hosts.Set("192.168.0.1", "localhost", true)
+	hosts.Set(true, "localhost", true)
 
 	hosts.GetByIp("192.168.0.14")
 }
