@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net"
 	"os"
 	"runtime"
@@ -15,8 +16,15 @@ func (h HostsFile) Length() int {
 	return len(h.entries)
 }
 
-func (h HostsFile) GetByIp(ip string) HostsEntry {
-	valid_ip := net.ParseIP(ip)
+func (h HostsFile) GetByIp(ip any) HostsEntry {
+	var valid_ip net.IP
+
+	switch ip.(type) {
+	case net.IP:
+		valid_ip = ip.(net.IP)
+	case string:
+		valid_ip = net.ParseIP(ip.(string))
+	}
 
 	if valid_ip == nil {
 		panic("GetByIp: Invalid IP")
@@ -170,7 +178,9 @@ func load_hosts_file() HostsFile {
 func main() {
 	hosts := load_hosts_file()
 
-	hosts.Set(true, "localhost", true)
+	valid_hostname := net.ParseIP("192.168.0.14")
 
-	hosts.GetByIp("192.168.0.14")
+	docker_image_host := hosts.GetByIp(valid_hostname)
+
+	fmt.Println(docker_image_host)
 }
