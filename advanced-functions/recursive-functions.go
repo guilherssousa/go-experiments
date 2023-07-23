@@ -35,16 +35,23 @@ func fibonacci(position uint) (value uint) {
 
 func main() {
 
-	start := time.Now()
 	position, err := strconv.Atoi(os.Args[1])
+
 	if err != nil {
 		log.Fatal(err)
 	}
-	if position >= 100_000_000 {
-		log.Fatal("Please use a input less than 100_000_000 (a hundred million).")
+
+	start(uint(position))
+}
+
+func start(position uint) {
+	if position >= 191_600_00 {
+		log.Fatal("Please use a input less than 191_600_00.")
 	}
 
-	value := fibonacci(uint(position))
+	start := time.Now()
+
+	value := fibonacci(position)
 
 	fmt.Println("Position:", position)
 	fmt.Println("Value:", value)
