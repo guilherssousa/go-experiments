@@ -1,6 +1,9 @@
-package address
+package address_test
 
-import "testing"
+import (
+	. "testes/address"
+	"testing"
+)
 
 type TestScenario struct {
 	input    string
@@ -8,6 +11,9 @@ type TestScenario struct {
 }
 
 func TestAddressType(t *testing.T) {
+	// You can add t.Parallel() to run tests in parallel.
+	// This is useful when you have a lot of tests.
+
 	scenarios := []TestScenario{
 		{"Rua das Flores", "Rua"},
 		{"Avenida Cordilheiros dos Andes", "Avenida"},
