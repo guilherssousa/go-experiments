@@ -4,7 +4,7 @@ These are some notes on how to create and run test suites in Go.
 
 ## Writing subtests
 
-There is an subtests example on [interfaces/shapes/shapes\_test.go].
+There is an subtests example on [shapes/shapes_test.go](/interfaces/shapes/shapes\_test.go).
 
 ## Running a test suite
 
