@@ -2,24 +2,46 @@ package address
 
 import "testing"
 
+type TestScenario struct {
+	input    string
+	expected string
+}
+
 func TestAddressType(t *testing.T) {
-	address := "Avenida Cordilheiros dos Andes"
+	scenarios := []TestScenario{
+		{"Rua das Flores", "Rua"},
+		{"Avenida Cordilheiros dos Andes", "Avenida"},
+		{"Praça das Rosas", "Praça"},
+		{"Rua das Flores", "Rua"},
+		{"Avenida dos Coqueiros", "Avenida"},
+		{"Rua Lagoa da Prata", "Rua"},
+		{"Estrada do Sol", "Estrada"},
+		{"Rodovia dos Imigrantes", "Rodovia"},
+		{"Avenida Automóvel Clube", "Avenida"},
+		{"RUA ADELINO DE SOUZA CASTRO", "Rua"},
+		{"AVENIDA DAS AMÉRICAS", "Avenida"},
+		{"ESTRADA DO GALEÃO", "Estrada"},
+		{"RODOVIA PRESIDENTE DUTRA", "Rodovia"},
+		{"PRAÇA DA BANDEIRA", "Praça"},
+		{"Prâça da Bandeira", "Invalid"},
+		{"", "Invalid"},
+		{"Central do CBLOL", "Invalid"},
+	}
 
-	expected := "Avenida"
-
-	if received := AddressType(address); received != expected {
-		t.Errorf("Expected %s, but received %s", expected, received)
+	for _, scenario := range scenarios {
+		if received := AddressType(scenario.input); received != scenario.expected {
+			t.Errorf("Expected %s, but received %s", scenario.expected, received)
+		}
 	}
 }
 
 func TestIncludes(t *testing.T) {
 	fruits := []string{"apple", "banana", "orange"}
 
-	fruit := "apple"
-
+	input := "apple"
 	expected := true
 
-	if received := Includes(fruits, fruit); received != expected {
+	if received := Includes(fruits, input); received != expected {
 		t.Errorf("Expected %t, but received %t", expected, received)
 	}
 }

@@ -9,7 +9,7 @@ import (
 
 // AddressType checks if address is a valid type and returns it.
 func AddressType(address string) string {
-	validTypes := []string{"rua", "avenida", "estrada", "rodovia"}
+	validTypes := []string{"rua", "avenida", "estrada", "rodovia", "praça"}
 
 	sanitizedWord := strings.ToLower(address)
 	firstWord := strings.Split(sanitizedWord, " ")[0]
