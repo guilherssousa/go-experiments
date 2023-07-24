@@ -16,14 +16,14 @@ func AddressType(address string) string {
 
 	title := cases.Title(language.English)
 
-	if includes(validTypes, firstWord) {
+	if Includes(validTypes, firstWord) {
 		return title.String(firstWord)
 	}
 
 	return "Invalid"
 }
 
-func includes[T comparable](slice []T, value T) bool {
+func Includes[T comparable](slice []T, value T) bool {
 	for _, i := range slice {
 		if i == value {
 			return true
