@@ -3,7 +3,13 @@ package main
 import (
 	"errors"
 	"fmt"
+	"time"
 )
+
+func coolFunction(invalidVariable string) string {
+  time.Sleep(time.Second * 10)
+  return invalidVariable
+}
 
 func main() {
 	// learning about the golang datatypes

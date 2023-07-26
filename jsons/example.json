@@ -1,0 +1,15 @@
+{
+  "nome": "Guilherme Sousa",
+  "idade": 5,
+  "cursos": [
+    {
+      "nome": "Introdução a Engenharia"
+    },
+    {
+      "nome": "Mneumônios com Neovim"
+    },
+    {
+      "nome": "Introdução ao Inhouse"
+    }
+  ] 
+}
