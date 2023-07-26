@@ -5,8 +5,11 @@ import (
   "encoding/json"
   "fmt"
   "io/ioutil"
+  "strconv"
 
   "net/http"
+
+  "github.com/gorilla/mux"
 )
 
 type user struct {
@@ -46,10 +49,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte("Erro ao criar o statement!"))
     return
   }
-   defer statement.Close()
 
-   insert, err := statement.Exec(user.Nome, user.Email)
-  
+  insert, err := statement.Exec(user.Nome, user.Email)
   if err != nil {
     w.Write([]byte("Erro ao executar o statement!"))
     return
@@ -57,10 +58,83 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
   insertId, err := insert.LastInsertId()
   if err != nil {
-    w.Write([]byte("Erro ao obter o ID inserido"))
+    w.Write([]byte("Erro ao obter o ID inserido!"))
     return
   }
-  
+
   w.WriteHeader(http.StatusCreated)
   w.Write([]byte(fmt.Sprintf("Usuário inserido com sucesso! Id: %d", insertId)))
+}
+
+// SearchUsers list all Users
+func ListUsers(w http.ResponseWriter, r *http.Request) {
+  db, err := database.Connect()
+  if err != nil {
+    w.Write([]byte("Erro ao conectar com o banco de dados!"))
+    return
+  }
+  defer db.Close()
+
+  rows, err := db.Query("SELECT * FROM usuarios")
+  if err != nil {
+    w.Write([]byte("Erro ao buscar os usuários"))
+    return
+  }
+  defer rows.Close()
+
+  var users []user
+
+  for rows.Next() {
+    var user user
+
+    if err := rows.Scan(&user.ID, &user.Nome, &user.Email); err != nil {
+      w.Write([]byte("Erro ao escanear o usuário."))
+      return
+    }
+
+    users = append(users, user)
+  }
+
+  w.WriteHeader(http.StatusOK)
+  if err := json.NewEncoder(w).Encode(users); err != nil {
+    w.Write([]byte("Erro ao converter os usuários para JSON."))
+    return
+  }
+}
+
+func GetUser(w http.ResponseWriter, r *http.Request) {
+  params := mux.Vars(r)
+
+  ID, err := strconv.ParseUint(params["id"], 10, 32)
+  if err != nil {
+    w.Write([]byte("Erro ao converter os dados da requisição."))
+    return
+  }
+
+  db, err := database.Connect()
+  if err != nil {
+    w.Write([]byte("Erro ao conectar com o banco de dados!"))
+    return
+  }
+  defer db.Close()
+
+  row, err := db.Query("SELECT * FROM usuarios WHERE id = ?", ID)
+  if err != nil {
+    w.Write([]byte("Erro ao buscar o usuário")) 
+    return 
+  }
+
+  var user user
+  if row.Next() {
+    if err := row.Scan(&user.ID, &user.Nome, &user.Email); err != nil {
+      w.Write([]byte("Erro ao mapear dados para o usuário"))
+      return
+    }
+  } 
+
+  w.WriteHeader(http.StatusOK)
+  if err := json.NewEncoder(w).Encode(user); err != nil {
+    w.Write([]byte("Erro ao converter o usuário para JSON!"))
+    return
+  } 
 }
