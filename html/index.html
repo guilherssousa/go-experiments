@@ -1,19 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu primeiro HTML em Go</title>
-</head>
-<body>
-  <h2>Meu primeiro HTML em Go</h2>  
-  <p>Essa é a primeira página que eu estou renderizando usando o Golang.</p>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu primeiro HTML em Go</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <h2>Meu primeiro HTML em Go</h2>  
+    <p>Essa é a primeira página que eu estou renderizando usando o Golang.</p>
 
-  <div>
-    <h3>Mailing List</h3>
+    <div>
+      <h3>Mailing List</h3>
 
-    {{ .Nome }} ({{ .Email }})
+      <p>
+      Se estiver interessado em se juntar a lista de transmissão, clique aqui:
+      <a href="/register">Registrar Email</a>
+      </p>
+
+      <ul>
+        <li>{{ .Nome }} ({{ .Email }})</li>
+      </ul>
+
+      <div>
+        <button id="btn">Explosão Tchakabun</button>
+      </div>
+
+      <a href="https://github.com/guilherssousa">Meu Github</a>
+  </body>
   
-  <a href="https://github.com/guilherssousa">Meu Github</a>
-</body>
+  <script>
+    const button = document.querySelector("#btn");
+
+    button.onclick = () => {
+      window.alert("Hello world!")
+    }
+  </script>
 </html>
