@@ -16,7 +16,8 @@ func main() {
   router := mux.NewRouter()
   router.HandleFunc("/usuarios", server.CreateUser).Methods(http.MethodPost)
   router.HandleFunc("/usuarios", server.ListUsers).Methods(http.MethodGet)
-  router.HandleFunc("/usuario/{id}", server.GetUser).Methods(http.MethodGet)
+  router.HandleFunc("/usuarios/{id}", server.GetUser).Methods(http.MethodGet)
+  router.HandleFunc("/usuarios/{id}", server.UpdateUser).Methods(http.MethodPut)
 
   fmt.Println("Escutando em http://localhost:5000")
   log.Fatal(http.ListenAndServe(":5000", router))
