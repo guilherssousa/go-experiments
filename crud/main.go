@@ -13,10 +13,9 @@ import (
 func main() {
   // CRUD é Create-Read-Update-Delete.
   // Não sei porque estou escrevendo isso denovo pela 40323a vez?
-
+  router := mux.NewRouter()
   engine := template.Must(template.ParseGlob("views/*.html"))
 
-  router := mux.NewRouter()
   router.HandleFunc("/usuarios", server.CreateUser).Methods(http.MethodPost)
   router.HandleFunc("/usuarios", server.ListUsers).Methods(http.MethodGet)
   router.HandleFunc("/usuarios/{id}", server.GetUser).Methods(http.MethodGet)
