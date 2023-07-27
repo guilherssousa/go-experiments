@@ -7,12 +7,18 @@ import (
   "log"
   "net/http"
 
+  "github.com/joho/godotenv"
   "github.com/gorilla/mux"
 )
 
 func main() {
   // CRUD é Create-Read-Update-Delete.
   // Não sei porque estou escrevendo isso denovo pela 40323a vez?
+  err := godotenv.Load() 
+  if err != nil {
+    log.Fatal("error loading .env file", err)
+  }
+
   router := mux.NewRouter()
   engine := template.Must(template.ParseGlob("views/*.html"))
 
