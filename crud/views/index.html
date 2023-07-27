@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meu primeiro HTML em Go</title>
+  </head>
+  <body>
+    <h2>Mailing List Mais Esports</h2>
+
+    <div>
+      <p>
+      Se estiver interessado em se juntar a lista de transmissão, clique aqui:
+      <a href="/register">Registrar Email</a>
+      </p>
+
+      <ul id="mailing-list"></ul>
+
+      <a href="https://github.com/guilherssousa">Meu Github</a>
+    </div>
+
+    <script>
+      const mailingList = document.querySelector("#mailing-list");
+
+      async function loadMailingList() {
+        console.log("fetching mailing list members");
+
+        const response = await fetch("/usuarios");
+        const json = await response.json();
+
+        json.forEach((member) => {
+          mailingList.innerHTML += `<li>${member.nome} (<a href="mailto:${member.email}">${member.email}</a>)</li>`;
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        loadMailingList();
+      });
+    </script>
+  </body>
+</html>

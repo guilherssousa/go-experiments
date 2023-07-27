@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -12,10 +13,12 @@ func Connect() (*sql.DB, error) {
 
   db, err := sql.Open("mysql", connection_str)
   if err != nil {
+    log.Println(err)
     return nil, err
   }
 
   if err = db.Ping(); err != nil {
+    log.Println(err)
     return nil, err
   }
 
