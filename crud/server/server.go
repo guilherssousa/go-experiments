@@ -12,7 +12,7 @@ import (
   "github.com/gorilla/mux"
 )
 
-type user struct {
+type user struct { 
   ID uint32 `json:"id"`
   Nome string `json:"nome"`
   Email string `json:"email"`
