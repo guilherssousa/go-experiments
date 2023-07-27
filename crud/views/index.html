@@ -3,39 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css">
     <title>Meu primeiro HTML em Go</title>
   </head>
   <body>
-    <h2>Mailing List Mais Esports</h2>
+    <main>
+      <h1>Message Board - Mais Esports</h1>
 
-    <div>
-      <p>
-      Se estiver interessado em se juntar a lista de transmissão, clique aqui:
-      <a href="/register">Registrar Email</a>
-      </p>
+      <div>
+        <h2>Mensagens</h2>
+        <hr />
+        
+        <ul id="message-list"></ul>
+      </div>
+      <div>
+        <h2>Membros</h2>
+        <hr />
 
-      <ul id="mailing-list"></ul>
+        <p>
+        Se estiver interessado em se juntar a lista de transmissão, clique aqui:
+        <a href="/register">Registrar Email</a>
+        </p>
 
-      <a href="https://github.com/guilherssousa">Meu Github</a>
-    </div>
+        <ul id="mailing-list"></ul>
 
-    <script>
-      const mailingList = document.querySelector("#mailing-list");
+        <a href="https://github.com/guilherssousa">Meu Github</a>
+      </div>
+    </main>
 
-      async function loadMailingList() {
-        console.log("fetching mailing list members");
-
-        const response = await fetch("/usuarios");
-        const json = await response.json();
-
-        json.forEach((member) => {
-          mailingList.innerHTML += `<li>${member.nome} (<a href="mailto:${member.email}">${member.email}</a>)</li>`;
-        });
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        loadMailingList();
-      });
-    </script>
+    <script src="/main.js"></script>
   </body>
 </html>
