@@ -1,14 +1,15 @@
 package main
 
 import (
-  "crud/server"
-  "fmt"
-  "html/template"
-  "log"
-  "net/http"
+	"crud/server"
+	"crud/util"
+	"fmt"
+	"html/template"
+	"log"
+	"net/http"
 
-  "github.com/joho/godotenv"
-  "github.com/gorilla/mux"
+	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -29,6 +30,9 @@ func main() {
   router.HandleFunc("/usuarios/{id}", server.UpdateUser).Methods(http.MethodPut)
   router.HandleFunc("/usuarios/{id}", server.DeleteUser).Methods(http.MethodDelete)
 
+  router.HandleFunc("/messages", server.CreateMessage).Methods(http.MethodPost)
+  router.HandleFunc("/messages", server.ListMessages).Methods(http.MethodGet)
+
   // View routes
   router.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
     engine.ExecuteTemplate(w, "index.html", nil)
@@ -41,6 +45,13 @@ func main() {
   // Static file serving
   router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 
+  localIP, err := util.LocalIP()
+  if err != nil {
+    log.Println(err)
+  }
+
   fmt.Println("Escutando em http://localhost:5000")
+  fmt.Printf("Escutando em outros dispositivos em http://%s:5000\n", localIP.To4().String())
+
   log.Fatal(http.ListenAndServe(":5000", router))
 }
