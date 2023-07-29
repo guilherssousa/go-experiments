@@ -6,3 +6,13 @@ main {
   max-width: 720px;
   margin: 0 auto;
 }
+
+textarea {
+  resize: horizontal;
+  width: 100%;
+}
+
+#message-form > input, #message-form textarea {
+  display: block;
+  margin: 8px 0;
+}

@@ -34,6 +34,10 @@ func main() {
     engine.ExecuteTemplate(w, "index.html", nil)
   }).Methods(http.MethodGet)
 
+  router.HandleFunc("/new-message", func (w http.ResponseWriter, r *http.Request) {
+    engine.ExecuteTemplate(w, "new-message.html", nil)
+  }).Methods(http.MethodGet)
+
   // Static file serving
   router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 

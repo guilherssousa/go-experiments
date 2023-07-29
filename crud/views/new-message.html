@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css">
+    <title>Meu primeiro HTML em Go</title>
+  </head>
+  <body>
+    <main>
+      <h1>Message Board - Mais Esports</h1>
+
+      <h2>Nova mensagem</h2>
+
+      <form id="message-form" name="message-form">
+        <label for="title">Título da mensagem</label>
+        <input required type="text" id="titulo" name="titulo" placeholder="Um título legal"></input>
+
+        <label for="content">Conteúdo da mensagem</label>
+        <textarea required name="conteudo" id="conteudo" cols="30" rows="10"></textarea>
+
+        <button type="submit" onclick="submitMessage(event)">Criar</button>
+        <button type="reset">Apagar</button>
+      </form>
+   </main>
+
+    <script src="/new-message.js"></script>
+  </body>
+</html>
