@@ -1,13 +1,14 @@
 package util
 
 import (
-	"errors"
 	"net"
 )
 
 // LocalIP get the host machine local IP address
-func LocalIP() (net.IP, error) {
+func LocalIPs() ([]net.IP, error) {
 	ifaces, err := net.Interfaces()
+  var ipList []net.IP
+
 	if err != nil {
 		return nil, err
 	}
@@ -27,12 +28,12 @@ func LocalIP() (net.IP, error) {
 			}
 
 			if isPrivateIP(ip) {
-				return ip, nil
+				ipList = append(ipList, ip)
 			}
 		}
 	}
-
-	return nil, errors.New("no IP")
+  
+  return ipList, nil
 }
 
 func isPrivateIP(ip net.IP) bool {

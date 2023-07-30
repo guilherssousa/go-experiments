@@ -32,6 +32,7 @@ func main() {
 
   router.HandleFunc("/messages", server.CreateMessage).Methods(http.MethodPost)
   router.HandleFunc("/messages", server.ListMessages).Methods(http.MethodGet)
+  router.HandleFunc("/messages/{id}", server.GetMessage).Methods(http.MethodGet)
 
   // View routes
   router.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
@@ -42,16 +43,23 @@ func main() {
     engine.ExecuteTemplate(w, "new-message.html", nil)
   }).Methods(http.MethodGet)
 
+  router.HandleFunc("/message", func (w http.ResponseWriter, r *http.Request) {
+    engine.ExecuteTemplate(w, "message.html", nil)
+  }).Methods(http.MethodGet)
+
   // Static file serving
   router.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 
-  localIP, err := util.LocalIP()
+  localIPs, err := util.LocalIPs()
   if err != nil {
     log.Println(err)
   }
 
   fmt.Println("Escutando em http://localhost:5000")
-  fmt.Printf("Escutando em outros dispositivos em http://%s:5000\n", localIP.To4().String())
+  fmt.Println("Escutando em Host nos IPs:")
+  for _, ip := range localIPs {
+    fmt.Printf("\thttp://%s:5000\n", ip.To4().String())
+  }
 
   log.Fatal(http.ListenAndServe(":5000", router))
 }

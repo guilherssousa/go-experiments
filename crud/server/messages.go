@@ -1,17 +1,20 @@
 package server
 
 import (
-	"crud/database"
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"time"
+  "crud/database"
+  "encoding/json"
+  "fmt"
+  "io/ioutil"
+  "log"
+  "net/http"
+  "strconv"
+  "time"
+
+  "github.com/gorilla/mux"
 )
 
 type message struct {
-  ID uint32 `json:"id"`
+  ID uint32 `json:"id,omitempty"`
   AuthorId int `db:"author_id" json:"author_id,omitempty"`
   PublishedAt *time.Time `db:"published_at" json:"published_at"`
   Title string `json:"title"`
@@ -20,7 +23,7 @@ type message struct {
 }
 
 func CreateMessage(w http.ResponseWriter, r *http.Request) {
- requestBody, err := ioutil.ReadAll(r.Body)  
+  requestBody, err := ioutil.ReadAll(r.Body)  
 
   if err != nil {
     log.Print(err)
@@ -43,7 +46,7 @@ func CreateMessage(w http.ResponseWriter, r *http.Request) {
     return
   }
   defer db.Close()  
- 
+
   // PREPARE STATEMENT
   statement, err :=  db.Prepare("INSERT INTO messages (title, content, author_id) values ($1, $2, 6)")
   if err != nil {
@@ -86,13 +89,13 @@ func ListMessages(w http.ResponseWriter, r *http.Request) {
   for rows.Next() {
     var message message
 
-      if err := rows.Scan(
-          &message.ID,
-          &message.Title,
-          &message.PublishedAt, 
-          &message.user.Nome,
-          &message.user.Email,
-        ); err != nil {
+    if err := rows.Scan(
+      &message.ID,
+      &message.Title,
+      &message.PublishedAt, 
+      &message.user.Nome,
+      &message.user.Email,
+    ); err != nil {
       log.Println(err)
       w.Write([]byte("Erro ao escanear a mensagem."))
       return
@@ -108,3 +111,54 @@ func ListMessages(w http.ResponseWriter, r *http.Request) {
     return
   }
 }
+
+func GetMessage(w http.ResponseWriter, r *http.Request) {
+  params := mux.Vars(r)
+
+  ID, err := strconv.ParseUint(params["id"], 10, 32)
+  if err != nil {
+    log.Println(err)
+    w.Write([]byte("Erro ao converter os dados da requisição."))
+    return
+  }
+
+  db, err := database.Connect()
+  if err != nil {
+    log.Println(err)
+    w.Write([]byte("Erro ao conectar com o banco de dados!"))
+    return
+  }
+  defer db.Close()
+
+  sql_statement := "SELECT messages.title, messages.content, messages.published_at, usuarios.nome, usuarios.email FROM messages LEFT JOIN usuarios ON usuarios.id = messages.author_id WHERE messages.id = $1"
+  row, err := db.Query(sql_statement, ID)
+  if err != nil {
+    log.Println(err)
+    w.Write([]byte("Erro ao buscar a mensagem")) 
+    return 
+  }
+
+  var message message
+  if row.Next() {
+    if err := row.Scan(
+        &message.Title,
+        &message.Content,
+        &message.PublishedAt,
+        &message.user.Nome,
+        &message.user.Email,
+      ); err != nil {
+      log.Println(err)
+      w.Write([]byte("Erro ao mapear dados para a mensagem"))
+      return
+    }
+  } 
+
+  w.WriteHeader(http.StatusOK)
+  if err := json.NewEncoder(w).Encode(message); err != nil {
+    log.Println(err)
+    w.Write([]byte("Erro ao converter a mensagem para JSON!"))
+    return
+  } 
+}
+
+

@@ -10,7 +10,7 @@ async function loadMessages() {
 
   json.forEach((message) => {
     messageList.innerHTML += `
-      <li><a href="/message/${message.id}">"${message.title}"</a> por ${message.nome} \<<a href="mailto:${message.email}">${message.email}</a>\></li>
+      <li><a href="/message?id=${message.id}">"${message.title}"</a> por ${message.nome} \<<a href="mailto:${message.email}">${message.email}</a>\></li>
     `;
   });
 }
