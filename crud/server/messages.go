@@ -72,7 +72,7 @@ func ListMessages(w http.ResponseWriter, r *http.Request) {
   }
   defer db.Close()
 
-  sql_query := "SELECT messages.id, messages.title, messages.published_at, usuarios.nome as name, usuarios.email FROM messages LEFT JOIN usuarios ON author_id = usuarios.id ORDER BY published_at"
+  sql_query := "SELECT messages.id, messages.title, messages.published_at, usuarios.nome as name, usuarios.email FROM messages LEFT JOIN usuarios ON author_id = usuarios.id ORDER BY published_at DESC"
   rows, err := db.Query(sql_query)
   if err != nil {
     log.Println(err)
