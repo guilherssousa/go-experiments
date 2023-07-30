@@ -12,6 +12,11 @@ textarea {
   width: 100%;
 }
 
+code {
+  overflow: hidden;
+  padding: 1rem;
+}
+
 #message-form > input, #message-form textarea {
   display: block;
   margin: 8px 0;
