@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -22,6 +23,11 @@ func main() {
 
   router := mux.NewRouter()
   engine := template.Must(template.ParseGlob("views/*.html"))
+  port := "5000"
+  
+  if p := os.Getenv("PORT"); p != "" {
+    port = p
+  }
 
   // API Routes
   router.HandleFunc("/usuarios", server.CreateUser).Methods(http.MethodPost)
@@ -55,11 +61,11 @@ func main() {
     log.Println(err)
   }
 
-  fmt.Println("Escutando em http://localhost:5000")
+  fmt.Printf("Escutando em http://localhost:%s\n", port)
   fmt.Println("Escutando em Host nos IPs:")
   for _, ip := range localIPs {
-    fmt.Printf("\thttp://%s:5000\n", ip.To4().String())
+    fmt.Printf("\thttp://%s:%s\n", ip.To4().String(), port)
   }
 
-  log.Fatal(http.ListenAndServe(":5000", router))
+  log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), router))
 }
