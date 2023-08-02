@@ -3,21 +3,13 @@ package main
 import (
   "bufio"
   "fmt"
-  "log"
-  "os"
   "sort"
   "strconv"
+  "aoc/utils"
 )
 
-func check(err error) {
-  if err != nil {
-    log.Fatal(err)
-  }
-}
-
 func main() {
-  input, err := os.OpenFile("inputs/day-1.txt", os.O_RDONLY, os.ModePerm);
-  check(err)
+  input := utils.ReadInputs("inputs/day-1.txt");
   defer input.Close();
 
   elfs := []int{}
@@ -36,7 +28,7 @@ func main() {
     }
 
     v, err := strconv.ParseInt(line, 10, 64);
-    check(err)
+    utils.Check(err)
 
     accumulated += int(v)
   }
