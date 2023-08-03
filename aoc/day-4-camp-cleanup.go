@@ -15,11 +15,17 @@ func contains(a, b, c, d int) bool {
   return result
 }
 
+func overlaps(a,b,c,d int) bool {
+  result := (b >= c) && (a <= d)
+  return result
+}
+
 func main() {
   input := utils.ReadInputs("inputs/day-4.txt")
   defer input.Close()
 
   covered_ranged_pairs := 0
+  overlapped_pairs := 0
 
   sc := bufio.NewScanner(input)
   for sc.Scan() {
@@ -46,14 +52,24 @@ func main() {
     a_contains_b := contains(int(pair_a[0]), int(pair_a[1]), int(pair_b[0]), int(pair_b[1]))
     if a_contains_b {
       covered_ranged_pairs++
-      continue
     }
 
     b_contains_a := contains(int(pair_b[0]), int(pair_b[1]), int(pair_a[0]), int(pair_a[1]))
-    if b_contains_a {
+    if b_contains_a && !a_contains_b {
       covered_ranged_pairs++
     }
+
+    a_overlaps_b := contains(int(pair_a[0]), int(pair_a[1]), int(pair_b[0]), int(pair_b[1]))
+    if a_overlaps_b {
+      overlapped_pairs++
+    }
+
+    b_overlaps_a := overlaps(int(pair_b[0]), int(pair_b[1]), int(pair_a[0]), int(pair_a[1]))
+    if b_overlaps_a && !a_overlaps_b {
+      overlapped_pairs++
+    }
+
   }
 
-  fmt.Println(covered_ranged_pairs)
+  fmt.Println(covered_ranged_pairs, overlapped_pairs)
 }
