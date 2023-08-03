@@ -1,33 +1,52 @@
 package main
 
 import (
-	"aoc/utils"
-	"bufio"
-	"fmt"
-	"strings"
+  "aoc/utils"
+  "bufio"
+  "fmt"
+  "strings"
 )
+
+func findCommonItem(iterable string, toIterate ...string) string {
+  common := string(iterable[0])
+  loop1:
+  for _, item := range iterable {
+    for _, list := range toIterate {
+      if !strings.Contains(list, string(item)) {
+        continue loop1 
+      }
+    }
+    common = string(item)
+  }
+
+  return common
+}
 
 func main() {
   input := utils.ReadInputs("inputs/day-3.txt")
   defer input.Close()
 
-  l := 0
+  priorities := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  priority_sum := 0
+
   sc := bufio.NewScanner(input)
+  sack_len := []string{}
+
   for sc.Scan() {
     line := sc.Text()
 
     if line == "" {
       continue
     }
-    sack_len := len(line)
-    first_sack := line[:sack_len/2]
-    second_sack := line[sack_len/2:]
 
-    for _, item := range first_sack {
-        if strings.Contains(second_sack, string(item)) {
-        fmt.Printf("%d %s Saco 1 e 2 contem %s\n", l, line, string(item))
-      }
+    sack_len = append(sack_len, line)
+
+    if len(sack_len) == 3 {
+      common_item := findCommonItem(sack_len[0], sack_len[1:]...)
+      priority_sum += strings.Index(priorities, common_item)
+      sack_len = []string{} 
     }
-    l++
   }
+
+  fmt.Println("final:", priority_sum)
 }
